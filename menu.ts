@@ -123,7 +123,7 @@ function informacoesDaConta() {
 // Executa se for chamado diretamente.
 
 if (require.main === module) {
- 
+ main();
 }
 
 
@@ -137,7 +137,6 @@ function sobre(): void {
     console.log("*****************************************************");
 }
 
-main();
 
 function keyPress(): void {
     console.log(colors.reset, "");
