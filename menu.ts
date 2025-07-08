@@ -1,15 +1,25 @@
 import readlinesync = require("readline-sync");
-import { colors } from './src/util/colors'
+import { colors } from './src/util/colors';
+import { Conta } from './src/model/Conta'
 
-// Array para guardar as contas.
-type Conta = { numero: number; nome: string; senha: string };
-let contas: Conta[] = [];
-
-
+interface contaSimples {
+    numero: number;
+    nome: string;
+    senha: string;
+}
+const contas: contaSimples[] = [];
 
 export function main() {
 
     let opcao: number;
+
+    // Objeto da Classe Conta (Teste)
+    const conta: Conta = new Conta(1, 123, 1, "Adriana", 10000);
+    conta.visualizar();
+    conta.sacar(10500);
+    conta.visualizar();
+    conta.depositar(5000);
+    conta.visualizar();
 
     while (true) {
 
@@ -27,7 +37,7 @@ export function main() {
         console.log("    4 - Saldo                                             ");
         console.log("    5 - Transferência                                     ");
         console.log("    6 - Sacar                                             ");
-        console.log("    7 - Pagamentos                                        ");
+        console.log("    7 - Depositar                                         ");
         console.log("    8 - Investimento                                      ");
         console.log("    9 - Informações da Conta                              ");
         console.log("   10 - Sair                                              ");
@@ -51,7 +61,7 @@ export function main() {
                 break;
             case 6: sacar();
                 break;
-            case 7: pagamentos();
+            case 7: depositar();
                 break;
             case 8: investimento();
                 break;
@@ -72,13 +82,13 @@ export function main() {
 
 // Função para criar nova conta.
 function criarConta() {
-    console.log(`\nCriar Conta ===`);
+    console.log(`\n=== Criar Conta ===`);
     const nome = readlinesync.question("Nome do cliente: ");
     const senha = readlinesync.question("Defina uma senha: ", { hideEchoBack: true });
     const numeroConta = Math.floor(1000 + Math.random() * 9000);
 
     contas.push({ numero: numeroConta, nome: nome, senha: senha });
-    console.log(`\nConta criada com sucesso! Número da Conta ${numeroConta}`)
+    console.log(`\nConta criada com sucesso! Número da Conta: ${numeroConta}`);
 }
 
 // Função para acessar Conta.
@@ -87,7 +97,7 @@ function acessarConta(): void {
     console.log('\n=== Acessar Conta ===');
     const numero = readlinesync.questionInt('Número da conta: ');
     const senha = readlinesync.question('Senha: ', { hideEchoBack: true });
-    const conta = contas.find(c => c.numero === numero && c.senha === senha);
+    const conta = contas.find((c: contaSimples) => c.numero === numero && c.senha === senha);
 
     if (conta) {
         console.log(`\nBem-vindo(a), ${conta.nome}!`);
@@ -109,7 +119,7 @@ function transferencia() {
 function sacar() {
     console.log("\n[!] Função ainda não implementada.");
 }
-function pagamentos() {
+function depositar() {
     console.log("\n[!] Função ainda não implementada.");
 }
 function investimento() {
@@ -118,14 +128,6 @@ function investimento() {
 function informacoesDaConta() {
     console.log("\n[!] Função ainda não implementada.");
 }
-
-
-// Executa se for chamado diretamente.
-
-if (require.main === module) {
- 
-}
-
 
 
 // Função com os dados da pessoa desenvolvedora.
@@ -137,14 +139,13 @@ function sobre(): void {
     console.log("*****************************************************");
 }
 
-main();
-
 function keyPress(): void {
     console.log(colors.reset, "");
     console.log("\nPressione enter para continuar...");
     readlinesync.prompt();
 }
 
+// Executa o programa. 
 main();
 
 
