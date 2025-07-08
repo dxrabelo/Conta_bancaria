@@ -71,7 +71,7 @@ public visualizar(): void {
 
 }
 console.log("\n\n*****************************************************");
-console.log("Dados da Conta:");
+console.log("Dados da Conta: ");
 console.log("*****************************************************");
 console.log("Numero da Conta: " + this._numero);
 console.log("Agência: " + this._agencia);
