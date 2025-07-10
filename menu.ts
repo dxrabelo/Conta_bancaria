@@ -1,11 +1,18 @@
+//importações necessárias. 
 import readlinesync = require("readline-sync");
 import { colors } from './src/util/colors';
 import { Conta } from './src/model/Conta'
+import { ContaCorrente } from './src/model/contaCorrente';
+import { ContaPoupança } from './src/model/contaPoupança';
 
 interface contaSimples {
     numero: number;
     nome: string;
     senha: string;
+    saldo: number;
+    titular: string;
+    extrato: number[];
+
 }
 const contas: contaSimples[] = [];
 
@@ -13,13 +20,29 @@ export function main() {
 
     let opcao: number;
 
-    // Objeto da Classe Conta (Teste)
-    const conta: Conta = new Conta(1, 123, 1, "Adriana", 10000);
+    // Objeto da classe conta (Teste).
+    const conta = new Conta(2, 1122, 302, "Adriana", 2000);
     conta.visualizar();
     conta.sacar(10500);
     conta.visualizar();
     conta.depositar(5000);
     conta.visualizar();
+
+    // Objeto da classe ContaCorrente (teste).
+    const contaCorrente: ContaCorrente = new ContaCorrente(3, 1234, "João", 1500, 500, 1);
+    contaCorrente.visualizar();
+    contaCorrente.sacar(2000);
+    contaCorrente.visualizar();
+    contaCorrente.depositar(1000);
+    contaCorrente.visualizar();
+
+    // Objeto da classe ContaPoupança (teste).
+    const contaPoupanca: ContaPoupança = new ContaPoupança(4, 5678, "Maria", 3000, 0, 2, 15);
+    contaPoupanca.visualizar();
+    contaPoupanca.sacar(500);
+    contaPoupanca.visualizar();
+    contaPoupanca.depositar(1000);
+    contaPoupanca.visualizar();
 
     while (true) {
 
@@ -47,7 +70,7 @@ export function main() {
             colors.reset);
 
         opcao = readlinesync.questionInt("\nEscolha uma opcao: ");
-
+        // switch case para as opções do menu.
         switch (opcao) {
             case 1: acessarConta();
                 break;
@@ -82,13 +105,15 @@ export function main() {
 
 // Função para criar nova conta.
 function criarConta() {
-    console.log(`\n=== Criar Conta ===`);
-    const nome = readlinesync.question("Nome do cliente: ");
-    const senha = readlinesync.question("Defina uma senha: ", { hideEchoBack: true });
-    const numeroConta = Math.floor(1000 + Math.random() * 9000);
+    console.log("\n=== Criar Conta ===");
+    const numero = readlinesync.questionInt('Número da conta: ');
+    const nome = readlinesync.question('Nome do titular: ');
+    const senha = readlinesync.question('Senha: ', { hideEchoBack: true });
+    const saldo = 0;
+    const extrato: number[] = [];
 
-    contas.push({ numero: numeroConta, nome: nome, senha: senha });
-    console.log(`\nConta criada com sucesso! Número da Conta: ${numeroConta}`);
+    contas.push({ numero, nome, senha, saldo, extrato, titular: nome });
+    console.log(`\nConta criada com sucesso! Número da Conta: ${numero}`);
 }
 
 // Função para acessar Conta.
@@ -105,30 +130,114 @@ function acessarConta(): void {
         console.log('\nConta não encontrada ou senha incorreta.');
     }
 }
-
-// Funções ainda não implementadas.
+// Função para atualizar dados da conta.
 function atualizarDadosDaConta() {
-    console.log("\n[!] Função ainda não implementada.");
-}
-function saldoExtrato() {
-    console.log("\n[!] Função ainda não implementada.");
-}
-function transferencia() {
-    console.log("\n[!] Função ainda não implementada.");
-}
-function sacar() {
-    console.log("\n[!] Função ainda não implementada.");
-}
-function depositar() {
-    console.log("\n[!] Função ainda não implementada.");
-}
-function investimento() {
-    console.log("\n[!] Função ainda não implementada.");
-}
-function informacoesDaConta() {
-    console.log("\n[!] Função ainda não implementada.");
+    console.log("\n=== Atualizar Dados da Conta ===");
+    const numero = readlinesync.questionInt('Número da conta: ');
+    const conta = contas.find((c: contaSimples) => c.numero === numero);
+    if (conta) {
+        const novaSenha = readlinesync.question('Nova senha: ', { hideEchoBack: true });
+        conta.senha = novaSenha;
+        console.log(`\nSenha atualizada com sucesso!`);
+    } else {
+        console.log('\nConta não reconhecida.');
+    }
 }
 
+// Função para exibir o saldo e extrato da conta.
+function saldoExtrato() {
+    console.log("\n=== Saldo e Extrato da Conta ===");
+    const numero = readlinesync.questionInt('Número da conta: ');
+    const conta = contas.find((c: contaSimples) => c.numero === numero);
+    if (conta) {
+        console.log(`\nSaldo: ${conta.saldo}`);
+        console.log(`Extrato: ${conta.extrato.join('\n')}`);
+    } else {
+        console.log('\nConta não reconhecida.');
+    }
+}
+// Função para realizar transferência entre contas.
+function transferencia() {
+    console.log("\n=== Transferência ===");
+    const numeroOrigem = readlinesync.questionInt('Número da conta de origem: ');
+    const numeroDestino = readlinesync.questionInt('Número da conta de destino: ');
+    const valor = readlinesync.questionFloat('Valor da transferência: ');
+
+    const contaOrigem = contas.find((c: contaSimples) => c.numero === numeroOrigem);
+    const contaDestino = contas.find((c: contaSimples) => c.numero === numeroDestino);
+
+    if (contaOrigem && contaDestino) {
+        if (contaOrigem.saldo >= valor) {
+            contaOrigem.saldo -= valor;
+            contaDestino.saldo += valor;
+            console.log(`\nTransferência de ${valor} realizada com sucesso!`);
+        } else {
+            console.log(`\nSaldo insuficiente na conta de origem.`);
+        }
+    } else {
+        console.log(`\nConta de origem ou destino não reconhecida.`);
+    }
+}
+
+// Função para sacar dinheiro da conta.
+function sacar() {
+    console.log("\n=== Sacar ===");
+    const numero = readlinesync.questionInt('Número da conta: ');
+    const valor = readlinesync.questionFloat('Valor do saque: ');
+    const conta = contas.find((c: contaSimples) => c.numero === numero);
+    if (conta) {
+        if (conta.saldo >= valor) {
+            conta.saldo -= valor;
+            console.log(`\nSaque de ${valor} realizado com sucesso!`);
+        } else {
+            console.log(`\nSaldo insuficiente para realizar o saque.`);
+        }
+    } else {
+        console.log('\nConta não reconhecida.');
+    }
+}
+
+// Função para depositar dinheiro na conta.
+function depositar() {
+    console.log("\n=== Depositar ===");
+    const numero = readlinesync.questionInt('Número da conta: ');
+    const valor = readlinesync.questionFloat('Valor do depósito: ');
+    const conta = contas.find((c: contaSimples) => c.numero === numero);
+    if (conta) {
+        conta.saldo += valor;
+        console.log(`\nDepósito de ${valor} realizado com sucesso!`);
+    } else {
+        console.log('\nConta não reconhecida.');
+    }
+}
+// Função para investimentos na conta.
+function investimento() {
+    console.log("\n=== Investimento ===");
+    const numero = readlinesync.questionInt('Número da conta: ');
+    const valor = readlinesync.questionFloat('Valor do investimento: ');
+    const conta = contas.find((c: contaSimples) => c.numero === numero);
+    if (conta) {
+        conta.saldo -= valor;
+        console.log(`\nInvestimento de ${valor} realizado com sucesso!`);
+    } else {
+        console.log('\nConta não reconhecida.');
+    }
+}
+
+// Função que exibe informações da conta.
+function informacoesDaConta() {
+    console.log("\n=== Informações da Conta ===");
+    const numero = readlinesync.questionInt('Número da conta: ');
+    const conta = contas.find((c: contaSimples) => c.numero === numero);
+    if (conta) {
+        console.log(`\nNúmero da conta: ${conta.numero}`);
+        console.log(`Titular: ${conta.titular}`);
+        console.log(`Saldo: ${conta.saldo}`);
+        console.log(`Extrato: ${conta.extrato.join('\n')}`);
+    } else {
+        console.log('\nConta não reconhecida.');
+    }
+}
 
 // Função com os dados da pessoa desenvolvedora.
 function sobre(): void {
@@ -149,3 +258,5 @@ function keyPress(): void {
 main();
 
 
+// Exibe informações sobre o desenvolvedor.
+sobre();
