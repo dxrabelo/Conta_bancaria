@@ -2,8 +2,7 @@
 import readlinesync = require("readline-sync");
 import { colors } from './src/util/colors';
 import { ContaPoupança } from './src/model/ContaPoupanca';
-import { ContaCorrente } from './src/model/Corrente';
-
+import { ContaCorrente } from './src/model/contaCorrente';
 interface contaSimples {
     numero: number;
     nome: string;
