@@ -1,9 +1,8 @@
 //importações necessárias. 
 import readlinesync = require("readline-sync");
 import { colors } from './src/util/colors';
-import { Conta } from './src/model/Conta'
-import { ContaCorrente } from './src/model/contaCorrente';
-import { ContaPoupança } from './src/model/contaPoupança';
+import { ContaCorrente } from './src/model/ContaCorrente';
+import { ContaPoupança } from './src/model/ContaPoupança';
 
 interface contaSimples {
     numero: number;
@@ -19,14 +18,6 @@ const contas: contaSimples[] = [];
 export function main() {
 
     let opcao: number;
-
-    // Objeto da classe conta (Teste).
-    const conta = new Conta(2, 1122, 302, "Adriana", 2000);
-    conta.visualizar();
-    conta.sacar(10500);
-    conta.visualizar();
-    conta.depositar(5000);
-    conta.visualizar();
 
     // Objeto da classe ContaCorrente (teste).
     const contaCorrente: ContaCorrente = new ContaCorrente(3, 1234, "João", 1500, 500, 1);

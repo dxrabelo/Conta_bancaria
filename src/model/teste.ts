@@ -1,14 +1,5 @@
-import { Conta } from './Conta'
-import { ContaPoupança } from './contaPoupança';
-import { ContaCorrente } from './contaCorrente';
-
-// Objeto da classe conta (Teste).
-const conta = new Conta(2, 1122, 302, "Adriana", 2000);
-conta.visualizar();
-conta.sacar(10500);
-conta.visualizar();
-conta.depositar(5000);
-conta.visualizar();
+import { ContaPoupança } from './ContaPoupança';
+import { ContaCorrente } from './ContaCorrente';
 
 // Objeto da classe ContaCorrente (teste).
 const contaCorrente: ContaCorrente = new ContaCorrente(3, 1234, "João", 1500, 500, 1);
