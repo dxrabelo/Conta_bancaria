@@ -1,5 +1,5 @@
 import { ContaPoupança } from './ContaPoupanca';
-import { ContaCorrente } from './contaCorrente';
+import { ContaCorrente } from './Corrente';
 
 
 const contaCorrente: ContaCorrente = new ContaCorrente(3, 1234, "João", 1500, 500, 1);
