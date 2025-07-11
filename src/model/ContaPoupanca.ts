@@ -21,4 +21,3 @@ export class ContaPoupança extends Conta {
         console.log(`Aniversário: ${this._aniversario}`);
     }
 }
-

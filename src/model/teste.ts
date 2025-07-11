@@ -1,4 +1,4 @@
-import { ContaPoupança } from './ContaPoupança';
+import { ContaPoupança } from './ContaPoupanca';
 import { ContaCorrente } from './ContaCorrente';
 
 // Objeto da classe ContaCorrente (teste).
