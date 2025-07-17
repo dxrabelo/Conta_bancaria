@@ -1,19 +1,12 @@
-import { Conta } from "../model/Conta"
+import { Conta } from "../model/Conta";
 
 export interface ContaRepository {
-
-    // CRUD
-
-    procurandoPorNumero(numero: number): void;
+    procurarPorNumero(numero: number): void;
     listarTodas(): void;
     cadastrar(conta: Conta): void;
     atualizar(conta: Conta): void;
-    detelar(numero: number): void;
-
-    // Métodos Bancários.
-
+    deletar(numero: number): void;
     sacar(numero: number, valor: number): void;
     depositar(numero: number, valor: number): void;
     transferir(numeroOrigem: number, numeroDestino: number, valor: number): void;
-
 }
