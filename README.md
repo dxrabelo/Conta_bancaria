@@ -20,3 +20,14 @@ Este projeto é uma aplicação de terminal desenvolvida em **TypeScript** que s
 
 ## 📂 Estrutura de Pastas
 
+src/
+├── controller/
+│ └── ContaController.ts
+├── model/
+│ └── Conta.ts
+├── repository/
+│ └── ContaRepository.ts
+├── util/
+│ └── Colors.ts
+├── main.ts
+
