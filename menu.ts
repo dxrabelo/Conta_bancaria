@@ -131,7 +131,7 @@ export function main() {
 
 function acessarConta(): void {
     const numero = readlinesync.questionInt('Número da conta: ');
-    Controller.procurandoPorNumero(numero); // não atribui a variável
+    Controller.procurarPorNumero(numero); // não atribui a variável
     keyPress();
 }
 
@@ -186,7 +186,7 @@ function buscarContaPorNumero(): void {
 
     if (conta) {
         console.log(colors.fg.green, `\nConta número ${numero} localizada:\n`, colors.reset);
-        Controller.procurandoPorNumero(numero); // Exibe os dados da conta
+        Controller.procurarPorNumero(numero); // Exibe os dados da conta
     } else {
         exibirErro(`Conta número ${numero} não encontrada.`);
     }
